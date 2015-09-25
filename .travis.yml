@@ -10,10 +10,18 @@ notifications:
     on_failure: always
 
 before_script:
+  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
+  - chmod 755 ./travis-tool.sh
+  - ./travis-tool.sh bootstrap
   - export PKG_NAME=$(Rscript -e 'cat(paste0(devtools::as.package(".")$package))')
   - export PKG_TARBALL=$(Rscript -e 'pkg <- devtools::as.package("."); cat(paste0(pkg$package,"_",pkg$version,".tar.gz"))')
   - R CMD build --no-build-vignettes .
   - R CMD INSTALL ${PKG_TARBALL}
   - rm ${PKG_TARBALL}
+  - ./travis-tool.sh install_github gmbecker/switchr
+  - 
   - echo "Session info:"
-  - Rscript -e "library(${PKG_NAME});devtools::session_info('${PKG_NAME}')"
+  - Rscript -e "library(${PKG_NAME});man = switchr::libManifest(); publishManifest(man)"
+  - ECHO "*** Start package manifest ***"
+  - cat pkg_manifest.rman
+  - ECHO "*** End package manifest ***"
