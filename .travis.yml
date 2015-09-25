@@ -21,7 +21,7 @@ before_script:
   - ./travis-tool.sh install_github gmbecker/switchr
   - 
   - echo "Session info:"
-  - Rscript -e "options(repos=c(CRAN='http://cran.rstudio.org'));library(${PKG_NAME});library(switchr); man = libManifest(); publishManifest(man)"
+  - Rscript -e "options(repos=c(CRAN='http://cran.rstudio.org'));library(${PKG_NAME});library(switchr); man = libManifest(); publishManifest(man, './travisbld.rman')"
   - ECHO "*** Start package manifest ***"
-  - cat ./pkg_manifest.rman
+  - cat ./travisbld.rman
   - ECHO "*** End package manifest ***"
